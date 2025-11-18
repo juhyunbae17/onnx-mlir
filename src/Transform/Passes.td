@@ -17,4 +17,12 @@ def BufferOMPLoopHoisting : Pass<"buffer-omploop-hoisting", "func::FuncOp"> {
   }];
 }
 
+def MyFuncName : Pass<"my-func-name", "func::FuncOp"> {
+  let summary = "A pass that prints the name of the function being processed.";
+  let description = [{
+    This pass demonstrates how to define a pass that operates on func.func
+    operations and prints the function's symbolic name.
+  }];
+}
+
 #endif

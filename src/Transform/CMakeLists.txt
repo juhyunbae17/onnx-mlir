@@ -50,3 +50,16 @@ add_onnx_mlir_library(BufferOMPLoopHoist
   MLIRPass
   OMOptionUtils
   )
+
+add_onnx_mlir_library(MyFuncName
+  MyFuncName.cpp
+  
+  DEPENDS
+  OMTransformsPassIncGen
+
+  LINK_LIBS PUBLIC
+  OMONNXOps
+  OMKrnlOps
+  MLIRPass
+  OMOptionUtils
+  )

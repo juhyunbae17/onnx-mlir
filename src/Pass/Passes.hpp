@@ -135,6 +135,9 @@ std::unique_ptr<mlir::Pass> createConvertONNXToTOSAPass();
 #define GEN_PASS_DECL_BUFFEROMPLOOPHOISTING
 #include "src/Transform/Passes.h.inc"
 
+#define GEN_PASS_DECL_MYFUNCNAME
+#include "src/Transform/Passes.h.inc"
+
 // Passes generated with table gen
 #define GEN_PASS_REGISTRATION
 #include "src/Transform/Passes.h.inc"
