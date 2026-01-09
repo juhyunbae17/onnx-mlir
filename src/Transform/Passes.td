@@ -41,4 +41,12 @@ def BufferOMPLoopHoisting : Pass<"buffer-omploop-hoisting", "func::FuncOp"> {
   }];
 }
 
+def ProcessKrnlParallelClause : Pass<"process-krnl-parallel-clause", "func::FuncOp"> {
+  let summary = "";
+  let description = [{
+    Migrate info from Krnl Parallel Clause into OpenMP Parallel operation.
+  }];
+}
+
+
 #endif

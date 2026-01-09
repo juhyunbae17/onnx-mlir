@@ -12,6 +12,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "mlir/Transforms/Passes.h"
+
 #include "src/Transform/ProcessKrnlParallelClause.hpp"
 #include "src/Dialect/Krnl/KrnlOps.hpp"
 #include "src/Pass/Passes.hpp"
@@ -34,6 +36,9 @@
 using namespace mlir;
 
 namespace {
+
+#define GEN_PASS_DEF_PROCESSKRNLPARALLELCLAUSE
+#include "src/Transform/Passes.h.inc"
 
 struct ProcessKrnlParallelClauseWithoutScopePattern
     : public OpRewritePattern<KrnlParallelClauseOp> {
@@ -90,29 +95,10 @@ struct ProcessKrnlParallelClauseWithoutScopePattern
 };
 
 struct ProcessKrnlParallelClausePass
-    : public PassWrapper<ProcessKrnlParallelClausePass,
-          OperationPass<func::FuncOp>> {
+    : public impl::ProcessKrnlParallelClauseBase<ProcessKrnlParallelClausePass> {
   MLIR_DEFINE_EXPLICIT_INTERNAL_INLINE_TYPE_ID(ProcessKrnlParallelClausePass)
 
-  ProcessKrnlParallelClausePass() {}
-  ProcessKrnlParallelClausePass(const ProcessKrnlParallelClausePass &pass)
-      : mlir::PassWrapper<ProcessKrnlParallelClausePass,
-            OperationPass<func::FuncOp>>() {}
-
-  StringRef getArgument() const override {
-    return "process-krnl-parallel-clause";
-  }
-
-  StringRef getDescription() const override {
-    return "Migrate info from Krnl Parallel Clause into OpenMP Parallel "
-           "operation.";
-  }
-
   void runOnOperation() final;
-
-  typedef PassWrapper<ProcessKrnlParallelClausePass,
-      OperationPass<func::FuncOp>>
-      BaseType;
 };
 
 void ProcessKrnlParallelClausePass::runOnOperation() {
@@ -144,6 +130,8 @@ void onnx_mlir::getKrnlParallelClauseIntoOpenMPPatterns(
 /*!
  * Create a Krnl Parallel Clause pass.
  */
-std::unique_ptr<mlir::Pass> onnx_mlir::createProcessKrnlParallelClausePass() {
+namespace onnx_mlir {
+std::unique_ptr<Pass> createProcessKrnlParallelClause() {
   return std::make_unique<ProcessKrnlParallelClausePass>();
+}
 }
