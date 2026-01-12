@@ -18,6 +18,9 @@ add_onnx_mlir_library(OMScfParallelPrivateRegion
   ProcessScfParallelPrivate.cpp
   ProcessKrnlParallelClause.cpp
 
+  DEPENDS
+  OMTransformsPassIncGen
+
   LINK_LIBS PUBLIC
   OMSupport
   MLIRTransformUtils

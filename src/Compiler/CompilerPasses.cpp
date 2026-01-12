@@ -391,7 +391,7 @@ void addKrnlToLLVMPasses(
     //  The alloca_scope ops are somewhat fragile; canonicalize remove them when
     //  redundant, which helps reliability of the compilation of these ops.
     pm.addPass(mlir::createCanonicalizerPass());
-    pm.addPass(onnx_mlir::createProcessKrnlParallelClausePass());
+    pm.addPass(onnx_mlir::createProcessKrnlParallelClause());
     pm.addPass(onnx_mlir::createBufferOMPLoopHoisting());
   }
 
