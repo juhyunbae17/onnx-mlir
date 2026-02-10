@@ -24,6 +24,7 @@
 #include "mlir/IR/BuiltinTypes.h"
 #include "mlir/Interfaces/CallInterfaces.h"
 #include "mlir/Pass/Pass.h"
+#include "mlir/Transforms/Passes.h"
 #include "llvm/ADT/SmallPtrSet.h"
 #include "llvm/Support/raw_ostream.h"
 
@@ -46,8 +47,7 @@ namespace onnx_mlir {
  * This pass insert KrnlInstrumentOp before and after each ops
  */
 
-class InstrumentPass
-    : public impl::InstrumentPassBase<InstrumentPass> {
+class InstrumentPass : public impl::InstrumentPassBase<InstrumentPass> {
 
 public:
   MLIR_DEFINE_EXPLICIT_INTERNAL_INLINE_TYPE_ID(InstrumentPass)
@@ -120,16 +120,17 @@ public:
       // hardware with an integrated accelerator for AI (z16 +) that supports
       // the required zDNN library version.
       // ```
+      std::string opName = op->getName().getStringRef().str();
+      Location loc = op->getLoc();
+      OpBuilder opBuilder(op);
+
       if (op->getNumResults() == 1 && isa<NoneType>(op->getResult(0).getType()))
         return WalkResult::advance();
       // Skip other instrument ops.
       if (isa<KrnlInstrumentOp>(op) || isa<ONNXPrintSignatureOp>(op))
         return WalkResult::advance();
 
-      std::string opName = op->getName().getStringRef().str();
       if (allowedOps.isEnabled(opName)) {
-        Location loc = op->getLoc();
-        OpBuilder opBuilder(op);
         if (instrumentBefore) {
           uint64_t tag = beforeTag();
           if (!hasInitializedRuntime) {

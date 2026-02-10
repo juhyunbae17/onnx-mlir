@@ -26,6 +26,7 @@
 #include "mlir/IR/BuiltinTypes.h"
 #include "mlir/Interfaces/CallInterfaces.h"
 #include "mlir/Pass/Pass.h"
+#include "mlir/Transforms/Passes.h"
 #include "llvm/ADT/SmallPtrSet.h"
 #include "llvm/Support/raw_ostream.h"
 
@@ -50,8 +51,8 @@ namespace onnx_mlir {
  * This pass insert KrnlInstrumentOp before and after each ops
  */
 
-class InstrumentCleanupPass 
-  : public impl::InstrumentCleanupPassBase<InstrumentCleanupPass> {
+class InstrumentCleanupPass
+    : public impl::InstrumentCleanupPassBase<InstrumentCleanupPass> {
 public:
   MLIR_DEFINE_EXPLICIT_INTERNAL_INLINE_TYPE_ID(InstrumentCleanupPass)
 
